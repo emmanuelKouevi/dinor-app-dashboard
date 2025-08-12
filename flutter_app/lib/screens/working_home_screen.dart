@@ -784,13 +784,13 @@ class _WorkingHomeScreenState extends State<WorkingHomeScreen> {
                       fit: BoxFit.cover,
                     ),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withValues(alpha: 0.7),
+                            Colors.black,
                           ],
                         ),
                       ),

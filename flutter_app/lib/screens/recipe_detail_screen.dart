@@ -535,7 +535,7 @@ class _RecipeDetailScreenState extends ConsumerState<RecipeDetailScreen> with Au
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF4D03F).withValues(alpha: 0.9),
+                        color: const Color(0xFFF4D03F),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -553,7 +553,7 @@ class _RecipeDetailScreenState extends ConsumerState<RecipeDetailScreen> with Au
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.9),
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(

@@ -1570,7 +1570,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: const Color(0xFFE53E3E).withValues(alpha: 0.1),
+                color: const Color(0xFFE53E3E),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(

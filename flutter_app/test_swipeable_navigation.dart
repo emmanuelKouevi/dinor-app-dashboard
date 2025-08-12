@@ -5,18 +5,19 @@
  * et de vérifier que toutes les fonctionnalités fonctionnent correctement.
  */
 
+import 'package:dinor_app/screens/swipeable_detail_screen.dart';
+import 'package:dinor_app/services/analytics_service.dart';
+import 'package:dinor_app/services/analytics_tracker.dart';
+import 'package:dinor_app/services/swipeable_navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 // Écrans et services
-import 'screens/swipeable_detail_screen.dart';
-import 'services/swipeable_navigation_service.dart';
-import 'services/analytics_service.dart';
-import 'services/analytics_tracker.dart';
+
 
 class TestSwipeableNavigationApp extends StatelessWidget {
-  const TestSwipeableNavigationApp({Key? key}) : super(key: key);
+  const TestSwipeableNavigationApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +139,7 @@ class _TestSwipeableNavigationScreenState extends ConsumerState<TestSwipeableNav
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    //super.build(context);
     
     return Scaffold(
       appBar: AppBar(

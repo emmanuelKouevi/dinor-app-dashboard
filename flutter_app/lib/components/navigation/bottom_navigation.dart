@@ -315,7 +315,7 @@ class _BottomNavigationState extends ConsumerState<BottomNavigation> {
                         color: Colors.black87,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(
@@ -402,16 +402,16 @@ class _BottomNavigationState extends ConsumerState<BottomNavigation> {
           borderRadius: BorderRadius.circular(16),
           border: isActive
               ? Border.all(
-                  color: const Color(0xFFFF6B35).withValues(alpha: 0.3),
+                  color: const Color(0xFFFF6B35),
                   width: 1,
                 )
               : null,
           boxShadow: isActive
               ? [
-                  BoxShadow(
-                    color: const Color(0xFFFF6B35).withValues(alpha: 0.2),
+                  const BoxShadow(
+                    color: Color(0xFFFF6B35),
                     blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    offset: Offset(0, 2),
                   )
                 ]
               : null,

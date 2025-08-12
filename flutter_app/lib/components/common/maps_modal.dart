@@ -149,9 +149,9 @@ class _MapsModalState extends State<MapsModal> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: Colors.black,
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -162,9 +162,9 @@ class _MapsModalState extends State<MapsModal> {
             // Header avec titre et bouton fermer
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF4D03F).withValues(alpha: 0.1),
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                color: Color(0xFFF4D03F),
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),

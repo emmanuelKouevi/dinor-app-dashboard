@@ -513,13 +513,13 @@ class _TipDetailScreenState extends ConsumerState<TipDetailScreen> with Automati
         // Tip Overlay
         Positioned.fill(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black.withValues(alpha: 0.7),
+                  Colors.black,
                 ],
               ),
             ),
@@ -561,9 +561,9 @@ class _TipDetailScreenState extends ConsumerState<TipDetailScreen> with Automati
         color: const Color(0xFFF4D03F),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFE2E8F0)),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -654,12 +654,12 @@ class _TipDetailScreenState extends ConsumerState<TipDetailScreen> with Automati
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    const Color(0xFF1A202C).withValues(alpha: 0.8),
-                    const Color(0xFF2D3748).withValues(alpha: 0.6),
+                    const Color(0xFF1A202C),
+                    const Color(0xFF2D3748),
                   ],
                 ),
               ),
@@ -673,7 +673,7 @@ class _TipDetailScreenState extends ConsumerState<TipDetailScreen> with Automati
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Colors.red.withValues(alpha: 0.9),
+                      color: Colors.red,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(

@@ -21,7 +21,7 @@ class UnifiedContentNavigation extends ConsumerWidget {
   final VoidCallback? onNext;
 
   const UnifiedContentNavigation({
-    Key? key,
+    super.key,
     required this.contentType,
     required this.currentId,
     this.previousId,
@@ -30,7 +30,7 @@ class UnifiedContentNavigation extends ConsumerWidget {
     this.nextTitle,
     this.onPrevious,
     this.onNext,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,11 +45,11 @@ class UnifiedContentNavigation extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black,
             blurRadius: 10,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
         border: Border.all(
@@ -66,7 +66,7 @@ class UnifiedContentNavigation extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: _getContentColor().withValues(alpha: 0.1),
+                  color: _getContentColor(),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Icon(
@@ -138,12 +138,12 @@ class UnifiedContentNavigation extends ConsumerWidget {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: isEnabled 
-              ? _getContentColor().withValues(alpha: 0.05)
+              ? _getContentColor()
               : const Color(0xFFF8F9FA),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isEnabled 
-                ? _getContentColor().withValues(alpha: 0.2)
+                ? _getContentColor()
                 : const Color(0xFFE2E8F0),
             width: 1,
           ),

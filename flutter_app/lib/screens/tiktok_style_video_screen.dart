@@ -551,7 +551,7 @@ class _TikTokStyleVideoScreenState extends ConsumerState<TikTokStyleVideoScreen>
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: isLiked ? const Color(0xFFE53E3E) : Colors.black.withValues(alpha: 0.3),
+                            color: isLiked ? const Color(0xFFE53E3E) : Colors.black,
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
@@ -586,7 +586,7 @@ class _TikTokStyleVideoScreenState extends ConsumerState<TikTokStyleVideoScreen>
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.3),
+                      color: Colors.black,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -618,7 +618,7 @@ class _TikTokStyleVideoScreenState extends ConsumerState<TikTokStyleVideoScreen>
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.3),
+                      color: Colors.black,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -781,7 +781,7 @@ class _TikTokStyleVideoScreenState extends ConsumerState<TikTokStyleVideoScreen>
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF4D03F).withValues(alpha: 0.1),
+                        color: const Color(0xFFF4D03F),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(

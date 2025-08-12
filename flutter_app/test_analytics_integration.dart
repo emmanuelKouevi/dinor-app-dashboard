@@ -5,13 +5,13 @@
  * et de vérifier que tous les événements sont correctement trackés.
  */
 
+import 'package:dinor_app/services/analytics_service.dart';
+import 'package:dinor_app/services/analytics_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'services/analytics_service.dart';
-import 'services/analytics_tracker.dart';
 
 class TestAnalyticsApp extends StatelessWidget {
-  const TestAnalyticsApp({Key? key}) : super(key: key);
+  const TestAnalyticsApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class TestAnalyticsApp extends StatelessWidget {
 }
 
 class TestAnalyticsScreen extends StatefulWidget {
-  const TestAnalyticsScreen({Key? key}) : super(key: key);
+  const TestAnalyticsScreen({super.key});
 
   @override
   State<TestAnalyticsScreen> createState() => _TestAnalyticsScreenState();

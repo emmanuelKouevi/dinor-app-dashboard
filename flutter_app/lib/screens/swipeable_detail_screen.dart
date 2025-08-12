@@ -360,7 +360,7 @@ class _SwipeableDetailScreenState extends ConsumerState<SwipeableDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    //super.build(context);
     
     if (_loading) {
       return _buildLoadingState();

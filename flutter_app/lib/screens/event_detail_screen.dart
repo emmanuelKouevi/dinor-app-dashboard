@@ -369,13 +369,13 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> with Auto
         // Gradient overlay
         Positioned.fill(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black.withValues(alpha: 0.7),
+                  Colors.black,
                 ],
               ),
             ),
@@ -400,7 +400,7 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> with Auto
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFFF4D03F).withValues(alpha: 0.2),
+              color: const Color(0xFFF4D03F),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
@@ -584,9 +584,9 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> with Auto
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -784,9 +784,9 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> with Auto
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: Colors.black,
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),

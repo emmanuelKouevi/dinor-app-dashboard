@@ -179,7 +179,7 @@ class SwipeableNavigationService {
     required String initialId,
     required String contentType,
     required List<Map<String, dynamic>> carouselItems,
-    int carouselIndex,
+    required int carouselIndex,
   }) async {
     final type = _contentTypeMap[contentType] ?? ContentType.recipe;
     
@@ -218,7 +218,7 @@ class SwipeableNavigationService {
     required String initialId,
     required String contentType,
     required List<Map<String, dynamic>> searchResults,
-    String searchTerm,
+    required String searchTerm,
   }) async {
     final type = _contentTypeMap[contentType] ?? ContentType.recipe;
     

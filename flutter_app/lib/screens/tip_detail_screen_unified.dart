@@ -379,14 +379,14 @@ class _TipDetailScreenUnifiedState extends ConsumerState<TipDetailScreenUnified>
                   right: 0,
                   height: 120,
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withValues(alpha: 0.3),
-                          Colors.black.withValues(alpha: 0.6),
+                          Colors.black,
+                          Colors.black,
                         ],
                       ),
                     ),
@@ -405,9 +405,9 @@ class _TipDetailScreenUnifiedState extends ConsumerState<TipDetailScreenUnified>
                           decoration: BoxDecoration(
                             color: const Color(0xFFF4D03F),
                             borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.2),
+                                color: Colors.black,
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -442,9 +442,9 @@ class _TipDetailScreenUnifiedState extends ConsumerState<TipDetailScreenUnified>
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.2),
+                                color: Colors.black,
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),

@@ -34,12 +34,12 @@ class UnifiedVideoPlayer extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    const Color(0xFF1A202C).withValues(alpha: 0.8),
-                    const Color(0xFF2D3748).withValues(alpha: 0.6),
+                    const Color(0xFF1A202C),
+                    const Color(0xFF2D3748),
                   ],
                 ),
               ),
@@ -52,8 +52,8 @@ class UnifiedVideoPlayer extends StatelessWidget {
                   Container(
                     width: 80,
                     height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.red.withValues(alpha: 0.9),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(

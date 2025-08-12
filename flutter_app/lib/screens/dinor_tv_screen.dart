@@ -332,9 +332,9 @@ class _DinorTVScreenState extends ConsumerState<DinorTVScreen> with AutomaticKee
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -377,13 +377,13 @@ class _DinorTVScreenState extends ConsumerState<DinorTVScreen> with AutomaticKee
                     ),
                     // Gradient overlay d'arrière-plan
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withValues(alpha: 0.7),
+                            Colors.black,
                           ],
                         ),
                       ),
