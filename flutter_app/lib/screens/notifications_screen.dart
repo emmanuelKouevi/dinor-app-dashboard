@@ -324,24 +324,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
         title: const Text('Notifications'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        elevation: 1,
-        toolbarHeight: 56,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => PermissionsService.showNotificationSettingsInfo(context),
-            tooltip: 'Paramètres de notifications',
-          ),
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => _loadNotifications(refresh: true),
-            tooltip: 'Actualiser',
-          ),
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: () => _loadNotifications(refresh: true),

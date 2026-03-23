@@ -4,10 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 import 'navigation_service.dart';
+import 'analytics_service.dart';
 
 class NotificationService {
   static const String _appId = "d98be3fd-e812-47ea-a075-bca9a16b4f6b";
   
+  static Map<String, String>? _pendingContentNavigation;
+
   static Future<void> initialize() async {
     debugPrint('🔔 [NotificationService] Initialisation OneSignal...');
     
@@ -145,6 +148,8 @@ class NotificationService {
     
     // Variable pour tracker si on a navigué
     bool hasNavigated = false;
+
+    _trackNotificationOpen(event);
     
     if (data != null) {
       debugPrint('🔍 [NotificationService] Données détaillées:');
@@ -219,15 +224,23 @@ class NotificationService {
       return;
     }
     
-    final contentType = pathSegments[0];
-    final contentId = pathSegments.length > 1 ? pathSegments[1] : null;
+    String? contentType;
+    String? contentId;
+
+    if (uri.host.isNotEmpty) {
+      contentType = uri.host;
+      contentId = pathSegments.isNotEmpty ? pathSegments[0] : null;
+    } else {
+      contentType = pathSegments[0];
+      contentId = pathSegments.length > 1 ? pathSegments[1] : null;
+    }
     
     if (contentId == null) {
       debugPrint('❌ [NotificationService] ID manquant dans deep link: $deepLink');
       return;
     }
     
-    _handleContentNavigation(contentType, contentId);
+    _handleContentNavigation(contentType ?? '', contentId);
   }
   
   static void _handleContentNavigation(String contentType, String contentId) {
@@ -238,22 +251,57 @@ class NotificationService {
     // Vérifier si NavigationService est disponible
     if (NavigationService.navigatorKey.currentState == null) {
       debugPrint('❌ [NotificationService] NavigatorKey.currentState est null !');
-      debugPrint('⏳ [NotificationService] Tentative de retry dans 1 seconde...');
-      
-      // Retry après un délai
-      Future.delayed(Duration(seconds: 1), () {
-        if (NavigationService.navigatorKey.currentState != null) {
-          debugPrint('✅ [NotificationService] NavigatorKey disponible après retry');
-          _performNavigation(contentType, contentId);
-        } else {
-          debugPrint('❌ [NotificationService] NavigatorKey toujours indisponible après retry');
-        }
-      });
+      _pendingContentNavigation = {
+        'contentType': contentType,
+        'contentId': contentId,
+      };
+      debugPrint('🕒 [NotificationService] Navigation mise en attente (app pas prête)');
       return;
     }
     
     _performNavigation(contentType, contentId);
     debugPrint('📱 [NotificationService] ====================================');
+  }
+
+  static void processPendingNavigation() {
+    try {
+      final pending = _pendingContentNavigation;
+      if (pending == null) return;
+      if (NavigationService.navigatorKey.currentState == null) return;
+
+      final contentType = pending['contentType'];
+      final contentId = pending['contentId'];
+      if (contentType == null || contentId == null) return;
+
+      _pendingContentNavigation = null;
+      debugPrint('✅ [NotificationService] Traitement navigation en attente: $contentType/$contentId');
+      _performNavigation(contentType, contentId);
+    } catch (e) {
+      debugPrint('❌ [NotificationService] Erreur processPendingNavigation: $e');
+    }
+  }
+
+  static void _trackNotificationOpen(OSNotificationClickEvent event) {
+    try {
+      final data = event.notification.additionalData;
+      final contentType = data?['content_type']?.toString();
+      final contentId = data?['content_id']?.toString();
+      final deepLink = data?['deep_link']?.toString();
+      final notificationId = event.notification.notificationId;
+
+      AnalyticsService.logCustomEvent(
+        eventName: 'notification_open',
+        parameters: {
+          'notification_id': notificationId ?? '',
+          'content_type': contentType ?? '',
+          'content_id': contentId ?? '',
+          'deep_link': deepLink ?? '',
+          'source': 'onesignal',
+        },
+      );
+    } catch (e) {
+      debugPrint('❌ [NotificationService] Erreur tracking notification_open: $e');
+    }
   }
 
   /// Effectue la navigation vers le contenu spécifié

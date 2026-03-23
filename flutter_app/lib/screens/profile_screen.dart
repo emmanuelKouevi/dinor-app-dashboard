@@ -170,18 +170,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         Scaffold(
           backgroundColor: const Color(0xFFF5F5F5),
           appBar: AppBar(
-            title: const Text(
-              'Profil',
-              style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            backgroundColor: const Color(0xFFE53E3E),
-            elevation: 0,
-            toolbarHeight: 56,
+            title: const Text('Profil'),
           ),
           body: _isLoading
               ? const Center(child: CircularProgressIndicator())

@@ -17,7 +17,7 @@ import '../services/navigation_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 import '../services/image_service.dart';
@@ -25,9 +25,7 @@ import '../services/image_service.dart';
 // Composables
 import '../composables/use_dinor_tv.dart';
 import '../composables/use_auth_handler.dart';
-
-// Components
-
+import '../components/common/youtube_video_modal.dart';
 import '../components/common/auth_modal.dart';
 
 
@@ -180,23 +178,7 @@ class _DinorTVScreenState extends ConsumerState<DinorTVScreen> with AutomaticKee
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
-        title: SvgPicture.asset(
-          'assets/images/LOGO_DINOR_monochrome.svg',
-          width: 32,
-          height: 32,
-          colorFilter: const ColorFilter.mode(
-            Color(0xFF2D3748),
-            BlendMode.srcIn,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 2,
-        toolbarHeight: 56,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF2D3748)),
-          onPressed: () => NavigationService.pop(),
-        ),
+        title: const Text('Dinor TV'),
       ),
       body: RefreshIndicator(
         onRefresh: _handleRefresh,

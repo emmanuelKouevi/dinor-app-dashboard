@@ -1,4 +1,4 @@
-package com.bfedition.dinorapp
+package com.dinorApp.dinorapp
 
 import io.flutter.embedding.android.FlutterActivity
 

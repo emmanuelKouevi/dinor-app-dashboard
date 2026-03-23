@@ -12,7 +12,7 @@ import '../services/permissions_service.dart';
 import '../composables/use_auth_handler.dart';
 import '../components/common/auth_modal.dart';
 
-class AppHeader extends ConsumerStatefulWidget {
+class AppHeader extends ConsumerStatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool showFavorite;
   final String? favoriteType;
@@ -45,11 +45,15 @@ class AppHeader extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
+  Size get preferredSize => const Size.fromHeight(90);
+
+  @override
   ConsumerState<AppHeader> createState() => _AppHeaderState();
 }
 
 class _AppHeaderState extends ConsumerState<AppHeader> with RouteAware {
   String? _currentRouteName;
+  bool _isAuthDialogOpen = false;
 
   @override
   void initState() {
@@ -273,10 +277,8 @@ class _AppHeaderState extends ConsumerState<AppHeader> with RouteAware {
                       print('🔍 [AppHeader] Actual route: $actualRoute');
                       print('🔍 [AppHeader] Is on detail screen: $isOnDetailScreen');
                       
-                      // Logique claire : n'afficher le titre QUE sur les écrans de détail
                       if (isOnDetailScreen && hasTitle) {
-                        // Afficher le titre du contenu seulement sur les pages de détail
-                        print('📝 [AppHeader] Affichage du titre: $subtitle');
+                        print('📝 [AppHeader] Affichage du titre détail: $subtitle');
                         return Text(
                           subtitle,
                           maxLines: 2,
@@ -284,19 +286,16 @@ class _AppHeaderState extends ConsumerState<AppHeader> with RouteAware {
                           textAlign: TextAlign.center,
                           style: AppTextStyles.headerTitle,
                         );
-                      } else {
-                        // Dans tous les autres cas, afficher le logo
-                        print('🏠 [AppHeader] Affichage du logo Dinor');
-                        return SvgPicture.asset(
-                          'assets/images/LOGO_DINOR_monochrome.svg',
-                          width: 32,
-                          height: 20,
-                          colorFilter: const ColorFilter.mode(
-                            Colors.white,
-                            BlendMode.srcIn,
-                          ),
-                        );
                       }
+
+                      // Écrans de section : afficher le titre fourni
+                      return Text(
+                        widget.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.headerTitle,
+                      );
                     },
                   ),
                 ),
@@ -423,26 +422,36 @@ class _AppHeaderState extends ConsumerState<AppHeader> with RouteAware {
   void _showAuthModal(BuildContext context, VoidCallback onSuccess) {
     final navigatorContext = NavigationService.navigatorKey.currentContext;
     if (navigatorContext == null) {
-      print('❌ [AppHeader] NavigatorContext not available');
+      print(' [AppHeader] NavigatorContext not available');
       return;
     }
+
+    if (_isAuthDialogOpen) {
+      return;
+    }
+
+    _isAuthDialogOpen = true;
     
     showDialog(
       context: navigatorContext,
-      barrierDismissible: true,
+      barrierDismissible: false,
       useRootNavigator: true,
       builder: (BuildContext context) {
         return AuthModal(
           isOpen: true,
           onClose: () {
+            _isAuthDialogOpen = false;
             Navigator.of(context, rootNavigator: true).pop();
           },
           onAuthenticated: () {
+            _isAuthDialogOpen = false;
             Navigator.of(context, rootNavigator: true).pop();
             onSuccess();
           },
         );
       },
-    );
+    ).whenComplete(() {
+      _isAuthDialogOpen = false;
+    });
   }
 } 

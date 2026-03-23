@@ -295,17 +295,32 @@ class AuthNotifier extends StateNotifier<AuthState> {
         print('✅ [AuthNotifier] Token invité valide');
         return true;
       }
-      
-      final response = await _apiService.get('/auth/me');
-      final isValid = response['success'];
-      print('🔐 [AuthNotifier] Vérification API: $isValid');
-      
+
+      // Valider le token via un endpoint protégé existant.
+      // Le backend peut ne pas exposer /auth/me, donc on utilise /user/profile.
+      final response = await _apiService.getUserProfile();
+      final isValid = response['success'] == true;
+      print('🔐 [AuthNotifier] Vérification API (user/profile): $isValid');
+
       if (!isValid) {
         print('❌ [AuthNotifier] Token invalide, déconnexion...');
         await logout();
+        return false;
       }
-      
-      return isValid;
+
+      final profileData = response['data'];
+      if (profileData is Map<String, dynamic>) {
+        final name = profileData['name'] as String?;
+        final email = profileData['email'] as String?;
+
+        state = state.copyWith(
+          user: profileData,
+          userName: name ?? state.userName,
+          userEmail: email ?? state.userEmail,
+        );
+      }
+
+      return true;
     } catch (error) {
       print('❌ [AuthNotifier] Erreur vérification auth: $error');
       // Si erreur, considérer comme non authentifié

@@ -33,6 +33,7 @@ import '../components/common/youtube_video_modal.dart';
 import '../components/common/home_video_modal.dart';
 import '../components/common/offline_indicator.dart';
 import '../components/dinor_icon.dart';
+import '../components/app_header.dart';
 
 // Services et composables
 import '../services/api_service.dart';
@@ -468,6 +469,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with AutomaticKeepAlive
     
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF), // Fond blanc identique
+      appBar: const AppHeader(
+        title: 'Accueil',
+      ),
       body: RefreshIndicator(
         onRefresh: _refreshAllData,
         child: SingleChildScrollView(

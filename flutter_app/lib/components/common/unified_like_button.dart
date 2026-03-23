@@ -711,12 +711,14 @@ class _UnifiedLikeButtonState extends ConsumerState<UnifiedLikeButton>
     if (isLiked) {
       return widget.variant == 'filled' ? Colors.white : const Color(0xFFE53E3E);
     }
-    
+
     switch (widget.variant) {
       case 'filled':
         return Colors.grey[600]!;
+      case 'minimal':
+        return const Color(0xFF4A5568).withOpacity(0.35);
       default:
-        return const Color(0xFF4A5568);
+        return const Color(0xFF4A5568).withOpacity(0.55);
     }
   }
 
@@ -724,12 +726,14 @@ class _UnifiedLikeButtonState extends ConsumerState<UnifiedLikeButton>
     if (isLiked) {
       return widget.variant == 'filled' ? Colors.white : const Color(0xFFE53E3E);
     }
-    
+
     switch (widget.variant) {
       case 'filled':
         return Colors.grey[600]!;
+      case 'minimal':
+        return const Color(0xFF4A5568).withOpacity(0.55);
       default:
-        return const Color(0xFF4A5568);
+        return const Color(0xFF4A5568).withOpacity(0.7);
     }
   }
 } 

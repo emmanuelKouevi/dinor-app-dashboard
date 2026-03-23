@@ -320,6 +320,9 @@ class _RecipesListScreenState extends ConsumerState<RecipesListScreen> with Auto
     
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
+      appBar: AppBar(
+        title: const Text('Recettes'),
+      ),
       body: CustomScrollView(
         slivers: [
           // Bannières

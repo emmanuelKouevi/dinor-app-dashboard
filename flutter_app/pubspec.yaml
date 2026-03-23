@@ -1,7 +1,7 @@
 name: dinor_app
 description: Dinor App - Votre chef de poche - Application culinaire mobile
 publish_to: 'none'
-version: 1.2.0+2
+version: 3.2.4+105
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -18,6 +18,7 @@ dependencies:
   # Navigation (remplace Vue Router) - Navigator classique avec GlobalKey
   # go_router supprimé pour éviter les erreurs de contexte modal
 
+  audio_session:
 
   # HTTP et API (remplace axios)
   http: ^1.1.2
@@ -92,6 +93,19 @@ dev_dependencies:
   flutter_lints: ^3.0.1
   json_serializable: ^6.7.1
   build_runner: ^2.4.7
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/images/launcher_icon.png
+
+flutter_native_splash:
+  color: "#E53E3E"
+  image: assets/images/launcher_icon.png
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true

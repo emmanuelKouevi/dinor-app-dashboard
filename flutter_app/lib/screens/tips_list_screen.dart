@@ -334,6 +334,9 @@ class _TipsListScreenState extends ConsumerState<TipsListScreen>
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
+      appBar: AppBar(
+        title: const Text('Astuces'),
+      ),
       body: _loading && _tips.isEmpty
           ? _buildLoadingState()
           : _error != null && _tips.isEmpty

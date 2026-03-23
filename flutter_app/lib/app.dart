@@ -30,12 +30,12 @@ import 'styles/text_styles.dart';
 
 // Components (équivalent des imports Vue)
 import 'components/common/loading_screen.dart';
-import 'components/app_header.dart';
 import 'components/navigation/bottom_navigation.dart';
 import 'components/common/install_prompt.dart';
 import 'components/common/app_tutorial.dart';
 import 'services/tutorial_service.dart';
 import 'stores/notifications_store.dart';
+import 'services/notification_service.dart';
 
 class DinorApp extends ConsumerStatefulWidget {
   const DinorApp({Key? key}) : super(key: key);
@@ -91,6 +91,12 @@ class _DinorAppState extends ConsumerState<DinorApp> {
       _showLoading = false;
     });
     print('🎉 [App] Chargement terminé, app prête !');
+
+    // Traiter une éventuelle navigation en attente suite à un clic sur notification
+    // (cas app fermée / cold start, Navigator pas encore prêt lors du callback OneSignal)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationService.processPendingNavigation();
+    });
     
     // Synchroniser le cache en arrière-plan
     _syncCacheInBackground();
@@ -162,6 +168,16 @@ class _DinorAppState extends ConsumerState<DinorApp> {
         _backPath = null;
       } else if (routePath == '/dinor-tv') {
         _currentPageTitle = 'Dinor TV';
+        _showFavoriteButton = false;
+        _showShareButton = false;
+        _backPath = null;
+      } else if (routePath == '/profile') {
+        _currentPageTitle = 'Profil';
+        _showFavoriteButton = false;
+        _showShareButton = false;
+        _backPath = null;
+      } else if (routePath == '/notifications') {
+        _currentPageTitle = 'Notifications';
         _showFavoriteButton = false;
         _showShareButton = false;
         _backPath = null;
@@ -342,39 +358,7 @@ class _DinorAppState extends ConsumerState<DinorApp> {
             if (!_showLoading)
               Scaffold(
                 backgroundColor: const Color(0xFFF5F5F5),
-                body: Column(
-                  children: [
-                    // En-tête de l'application - AppHeader
-                    AppHeader(
-                      title: _currentPageTitle,
-                      showFavorite: _showFavoriteButton,
-                      favoriteType: _favoriteType,
-                      favoriteItemId: _favoriteItemId,
-                      initialFavorited: _isContentFavorited,
-                      showShare: _showShareButton,
-                      backPath: _backPath,
-                      onFavoriteUpdated: _handleFavoriteUpdate,
-                      onShare: _handleShare,
-                      onBack: _handleBack,
-                      onAuthRequired: _handleAuthRequired,
-                    ),
-                    
-                    // Main Content - classe CSS identique
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFFFFFFF), // Fond blanc pour la zone principale
-                        ),
-                        padding: EdgeInsets.only(
-                          top: 0, // padding-top: 80px (with-header)
-                          bottom: _showBottomNav ? 0 : 0, // padding-bottom: 80px (with-bottom-nav)
-                        ),
-                        child: child ?? const SizedBox.shrink(),
-                      ),
-                    ),
-                  ],
-                ),
+                body: child ?? const SizedBox.shrink(),
                 
                 // Bottom Navigation - v-if="showBottomNav" (dynamic with API pages)
                 bottomNavigationBar: _showBottomNav ? const BottomNavigation() : null,

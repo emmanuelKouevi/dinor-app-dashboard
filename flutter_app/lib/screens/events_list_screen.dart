@@ -172,58 +172,7 @@ class _EventsListScreenState extends ConsumerState<EventsListScreen> with Automa
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
-        title: const Text(
-          'Événements',
-          style: TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF2D3748),
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        toolbarHeight: 56,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF2D3748)),
-          onPressed: () => NavigationService.pop(),
-        ),
-        actions: [
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.filter_list, color: Color(0xFF2D3748)),
-                onPressed: () => _showCategoryFilter(),
-              ),
-              if (_activeFiltersCount > 0)
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE53E3E),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 16,
-                      minHeight: 16,
-                    ),
-                    child: Text(
-                      '$_activeFiltersCount',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ],
+        title: const Text('Événements'),
       ),
       body: RefreshIndicator(
         onRefresh: _handleRefresh,

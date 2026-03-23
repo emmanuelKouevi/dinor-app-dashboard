@@ -282,6 +282,9 @@ class _WorkingHomeScreenState extends State<WorkingHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
+      appBar: const AppHeader(
+        title: 'Accueil',
+      ),
       body: Column(
         children: [
           // Contenu principal avec pull-to-refresh
@@ -298,19 +301,6 @@ class _WorkingHomeScreenState extends State<WorkingHomeScreen> {
                     _buildWelcomeHeader(),
                     const SizedBox(height: 24),
 
-                    // Événements d'abord
-                    _buildSection(
-                      'Événements',
-                      '/events',
-                      events,
-                      isLoadingEvents,
-                      errorEvents,
-                      _buildEventCard,
-                      Icons.event,
-                      const Color(0xFF38A169),
-                    ),
-                    const SizedBox(height: 24),
-
                     // Recettes
                     _buildSection(
                       'Recettes',
@@ -322,7 +312,23 @@ class _WorkingHomeScreenState extends State<WorkingHomeScreen> {
                       Icons.restaurant,
                       const Color(0xFFE53E3E),
                     ),
+
                     const SizedBox(height: 24),
+
+                    if (isLoadingEvents || errorEvents != null || events.isNotEmpty) ...[
+                      // Événements d'abord
+                      _buildSection(
+                        'Événements',
+                        '/events',
+                        events,
+                        isLoadingEvents,
+                        errorEvents,
+                        _buildEventCard,
+                        Icons.event,
+                        const Color(0xFF38A169),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
 
                     // Astuces
                     _buildSection(
