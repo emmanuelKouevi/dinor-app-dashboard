@@ -315,6 +315,20 @@ class _WorkingHomeScreenState extends State<WorkingHomeScreen> {
 
                     const SizedBox(height: 24),
 
+                    // Astuces
+                    _buildSection(
+                      'Astuces',
+                      '/tips',
+                      tips,
+                      isLoadingTips,
+                      errorTips,
+                      _buildTipCard,
+                      Icons.lightbulb,
+                      const Color(0xFFF4D03F),
+                    ),
+
+                    const SizedBox(height: 24),
+
                     if (isLoadingEvents || errorEvents != null || events.isNotEmpty) ...[
                       // Événements d'abord
                       _buildSection(
@@ -330,17 +344,6 @@ class _WorkingHomeScreenState extends State<WorkingHomeScreen> {
                       const SizedBox(height: 24),
                     ],
 
-                    // Astuces
-                    _buildSection(
-                      'Astuces',
-                      '/tips',
-                      tips,
-                      isLoadingTips,
-                      errorTips,
-                      _buildTipCard,
-                      Icons.lightbulb,
-                      const Color(0xFFF4D03F),
-                    ),
                     const SizedBox(height: 24),
 
                     // Vidéos

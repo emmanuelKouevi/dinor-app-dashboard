@@ -163,6 +163,7 @@ class _EnhancedDinorTVScreenState extends ConsumerState<EnhancedDinorTVScreen>
           backgroundColor: const Color(0xFFF8F9FA),
           appBar: AppBar(
             title: const Text('Dinor TV'),
+            automaticallyImplyLeading: false,
           ),
           body: RefreshIndicator(
             onRefresh: _handleRefresh,

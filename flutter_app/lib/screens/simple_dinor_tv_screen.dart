@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/navigation_service.dart';
 import '../components/common/youtube_video_modal.dart';
+import '../components/app_header.dart';
 
 class SimpleDinorTVScreen extends StatefulWidget {
   const SimpleDinorTVScreen({Key? key}) : super(key: key);
@@ -139,24 +140,8 @@ class _SimpleDinorTVScreenState extends State<SimpleDinorTVScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      appBar: AppBar(
-        title: SvgPicture.asset(
-          'assets/images/LOGO_DINOR_monochrome.svg',
-          width: 32,
-          height: 32,
-          colorFilter: const ColorFilter.mode(
-            Color(0xFF2D3748),
-            BlendMode.srcIn,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        toolbarHeight: 56,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF2D3748)),
-          onPressed: () => NavigationService.pop(),
-        ),
+      appBar: const AppHeader(
+        title: 'Dinor TV',
       ),
       body: _buildBody(),
     );

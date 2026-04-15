@@ -426,7 +426,7 @@ class _BottomNavigationState extends ConsumerState<BottomNavigation> {
                 item['icon'],
                 size: 22, // Taille uniforme pour tous
                 color: isActive
-                    ? const Color(0xFFFF6B35)
+                    ? Colors.white
                     : const Color.fromRGBO(0, 0, 0, 0.7),
               ),
             ),
@@ -439,7 +439,7 @@ class _BottomNavigationState extends ConsumerState<BottomNavigation> {
                 fontSize: 11, // Taille uniforme pour tous
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
                 color: isActive
-                    ? const Color(0xFFFF6B35)
+                    ? Colors.white
                     : const Color.fromRGBO(0, 0, 0, 0.7),
                 height: 1.2,
               ),
