@@ -9,7 +9,7 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class VideoModal extends StatefulWidget {
   final bool isOpen;
@@ -30,9 +30,10 @@ class VideoModal extends StatefulWidget {
 }
 
 class _VideoModalState extends State<VideoModal> {
-  late WebViewController _controller;
+  InAppWebViewController? _webViewController;
   bool _isLoading = true;
   String? _error;
+  double _progress = 0;
 
   @override
   void initState() {
@@ -53,56 +54,10 @@ class _VideoModalState extends State<VideoModal> {
   void _initializeWebView() {
     print('📺 [VideoModal] Initialisation WebView pour: ${widget.title}');
     print('📺 [VideoModal] URL: ${widget.videoUrl}');
-    
-    // Convertir en URL embed si nécessaire
-    final embedUrl = _convertToEmbedUrl(widget.videoUrl);
-    print('📺 [VideoModal] URL embed: $embedUrl');
-    
-    try {
-      _controller = WebViewController()
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setNavigationDelegate(
-          NavigationDelegate(
-            onPageStarted: (String url) {
-              print('📺 [VideoModal] Page en cours de chargement: $url');
-              if (mounted) {
-                setState(() {
-                  _isLoading = true;
-                  _error = null;
-                });
-              }
-            },
-            onPageFinished: (String url) {
-              print('✅ [VideoModal] Page chargée: $url');
-              if (mounted) {
-                setState(() {
-                  _isLoading = false;
-                });
-              }
-            },
-            onWebResourceError: (WebResourceError error) {
-              print('❌ [VideoModal] Erreur WebView: ${error.description}');
-              if (mounted) {
-                setState(() {
-                  _isLoading = false;
-                  _error = error.description;
-                });
-              }
-            },
-          ),
-        )
-        ..loadRequest(Uri.parse(embedUrl));
-      
-      print('✅ [VideoModal] WebViewController initialisé');
-    } catch (e) {
-      print('❌ [VideoModal] Erreur initialisation WebView: $e');
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-          _error = e.toString();
-        });
-      }
-    }
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
   }
 
   String _convertToEmbedUrl(String url) {
@@ -242,7 +197,11 @@ class _VideoModalState extends State<VideoModal> {
               ElevatedButton(
                 onPressed: () {
                   print('📺 [VideoModal] Tentative de rechargement');
-                  _initializeWebView();
+                  setState(() {
+                    _error = null;
+                    _isLoading = true;
+                  });
+                  _webViewController?.reload();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFE53E3E),
@@ -258,26 +217,86 @@ class _VideoModalState extends State<VideoModal> {
       );
     }
 
+    final embedUrl = _convertToEmbedUrl(widget.videoUrl);
+    
     return Stack(
       children: [
-        // WebView
-        WebViewWidget(controller: _controller),
+        // WebView avec support upload de photos
+        InAppWebView(
+          initialUrlRequest: URLRequest(url: WebUri(embedUrl)),
+          initialSettings: InAppWebViewSettings(
+            javaScriptEnabled: true,
+            useHybridComposition: true,
+            allowFileAccess: true,
+            allowContentAccess: true,
+            mediaPlaybackRequiresUserGesture: false,
+            allowFileAccessFromFileURLs: true,
+            allowUniversalAccessFromFileURLs: true,
+          ),
+          onWebViewCreated: (controller) {
+            _webViewController = controller;
+            print('✅ [VideoModal] WebView créée');
+          },
+          onLoadStart: (controller, url) {
+            print('📺 [VideoModal] Chargement: $url');
+            if (mounted) {
+              setState(() {
+                _isLoading = true;
+                _error = null;
+              });
+            }
+          },
+          onLoadStop: (controller, url) {
+            print('✅ [VideoModal] Chargé: $url');
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+              });
+            }
+          },
+          onProgressChanged: (controller, progress) {
+            if (mounted) {
+              setState(() {
+                _progress = progress / 100;
+              });
+            }
+          },
+          onReceivedError: (controller, request, error) {
+            print('❌ [VideoModal] Erreur: ${error.description}');
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+                _error = error.description;
+              });
+            }
+          },
+          onPermissionRequest: (controller, request) async {
+            print('🔐 [VideoModal] Permission demandée: ${request.resources}');
+            return PermissionResponse(
+              resources: request.resources,
+              action: PermissionResponseAction.GRANT,
+            );
+          },
+        ),
         
         // Indicateur de chargement
         if (_isLoading)
           Container(
             color: Colors.black,
-            child: const Center(
+            child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE53E3E)),
+                    value: _progress > 0 ? _progress : null,
+                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFE53E3E)),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
-                    'Chargement de la vidéo...',
-                    style: TextStyle(
+                    _progress > 0
+                        ? 'Chargement ${(_progress * 100).toInt()}%...'
+                        : 'Chargement de la vidéo...',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontFamily: 'Roboto',

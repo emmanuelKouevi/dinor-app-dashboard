@@ -165,9 +165,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<bool> register(String name, String email, String password, String passwordConfirmation) async {
+  Future<bool> register(
+    String name, 
+    String email, 
+    String password, 
+    String passwordConfirmation, {
+    bool acceptNotifications = false,
+  }) async {
     try {
       print('📝 [AuthNotifier] Tentative d\'inscription pour: $email');
+      print('📝 [AuthNotifier] Consentement notifications: $acceptNotifications');
       print('📝 [AuthNotifier] Endpoint: https://new.dinorapp.com/api/v1/auth/register');
       
       final response = await _apiService.post('/auth/register', {
@@ -175,6 +182,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         'email': email,
         'password': password,
         'password_confirmation': passwordConfirmation,
+        'accept_notifications': acceptNotifications,
       });
       
       print('📝 [AuthNotifier] Réponse de l\'API: $response');

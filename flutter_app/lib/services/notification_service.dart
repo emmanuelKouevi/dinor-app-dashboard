@@ -202,13 +202,74 @@ class NotificationService {
       // Vérifier si c'est un deep link de l'app
       if (url.startsWith('dinor://')) {
         _handleDeepLink(url);
+      } else if (url.contains('dinorapp.com')) {
+        // URL web dinorapp.com - parser et naviguer en interne
+        debugPrint('🏠 [NotificationService] URL Dinor détectée, navigation interne');
+        _handleDinorWebUrl(url);
       } else {
-        // URL web classique - ouvrir dans le navigateur
-        debugPrint('🌐 [NotificationService] Ouverture URL web: $url');
+        // URL web externe - ouvrir dans le navigateur
+        debugPrint('🌐 [NotificationService] Ouverture URL externe: $url');
         _launchWebUrl(url);
       }
     } catch (e) {
       debugPrint('❌ [NotificationService] Erreur navigation: $e');
+    }
+  }
+  
+  /// Parse une URL web Dinor et navigue en interne
+  /// Exemple: https://new.dinorapp.com/pwa/recipe/32 -> navigation vers recette 32
+  static void _handleDinorWebUrl(String url) {
+    debugPrint('🔍 [NotificationService] Parsing URL Dinor: $url');
+    
+    try {
+      final uri = Uri.parse(url);
+      final pathSegments = uri.pathSegments;
+      
+      debugPrint('📍 [NotificationService] Path segments: $pathSegments');
+      
+      // Format attendu: /pwa/recipe/32 ou /recipe/32
+      if (pathSegments.isEmpty) {
+        debugPrint('⚠️ [NotificationService] URL vide, pas de navigation');
+        return;
+      }
+      
+      // Trouver le type de contenu et l'ID
+      String? contentType;
+      String? contentId;
+      
+      // Parcourir les segments pour trouver le type et l'ID
+      for (int i = 0; i < pathSegments.length; i++) {
+        final segment = pathSegments[i];
+        
+        // Ignorer 'pwa' et autres segments non pertinents
+        if (segment == 'pwa' || segment.isEmpty) {
+          continue;
+        }
+        
+        // Types de contenu supportés
+        if (['recipe', 'tip', 'event', 'dinor-tv', 'page'].contains(segment)) {
+          contentType = segment;
+          // L'ID devrait être le segment suivant
+          if (i + 1 < pathSegments.length) {
+            contentId = pathSegments[i + 1];
+          }
+          break;
+        }
+      }
+      
+      if (contentType != null && contentId != null) {
+        debugPrint('✅ [NotificationService] URL parsée: type=$contentType, id=$contentId');
+        _handleContentNavigation(contentType, contentId);
+      } else {
+        debugPrint('⚠️ [NotificationService] Impossible de parser l\'URL: $url');
+        debugPrint('⚠️ [NotificationService] Type: $contentType, ID: $contentId');
+        // Fallback: ouvrir dans le navigateur
+        _launchWebUrl(url);
+      }
+    } catch (e) {
+      debugPrint('❌ [NotificationService] Erreur parsing URL Dinor: $e');
+      // Fallback: ouvrir dans le navigateur
+      _launchWebUrl(url);
     }
   }
   

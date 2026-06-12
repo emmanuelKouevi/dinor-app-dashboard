@@ -13,7 +13,7 @@ import '../screens/simple_events_screen.dart';
 import '../screens/enhanced_dinor_tv_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/pages_list_screen.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../screens/terms_of_service_screen.dart';
 import '../screens/privacy_policy_screen.dart';
 import '../screens/cookie_policy_screen.dart';
@@ -357,10 +357,20 @@ class NavigationService {
               backgroundColor: const Color(0xFFF4D03F),
               foregroundColor: Colors.black,
             ),
-            body: WebViewWidget(
-              controller: WebViewController()
-                ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                ..loadRequest(Uri.parse(url)),
+            body: InAppWebView(
+              initialUrlRequest: URLRequest(url: WebUri(url)),
+              initialSettings: InAppWebViewSettings(
+                javaScriptEnabled: true,
+                useHybridComposition: true,
+                allowFileAccess: true,
+                allowContentAccess: true,
+              ),
+              onPermissionRequest: (controller, request) async {
+                return PermissionResponse(
+                  resources: request.resources,
+                  action: PermissionResponseAction.GRANT,
+                );
+              },
             ),
           ),
           settings: settings,

@@ -57,5 +57,19 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>Cette application utilise le microphone pour enregistrer des messages vocaux.</string>
+
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Cette application utilise votre position pour vous signaler des évènements à proximité.</string>
+
+	<key>NSCameraUsageDescription</key>
+	<string>Pour prendre une photo de votre participation</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pour choisir une photo depuis la galerie</string>
+
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Pour sauvegarder des photos dans votre galerie</string>
 </dict>
 </plist>

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class MapsModal extends StatefulWidget {
@@ -15,9 +15,10 @@ class MapsModal extends StatefulWidget {
 }
 
 class _MapsModalState extends State<MapsModal> {
-  late final WebViewController _webViewController;
+  InAppWebViewController? _webViewController;
   bool isLoading = true;
   String? errorMessage;
+  double _progress = 0;
 
   @override
   void initState() {
@@ -26,34 +27,10 @@ class _MapsModalState extends State<MapsModal> {
   }
 
   void _initializeWebView() {
-    _webViewController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            // Optionnel: afficher la progression
-          },
-          onPageStarted: (String url) {
-            setState(() {
-              isLoading = true;
-              errorMessage = null;
-            });
-          },
-          onPageFinished: (String url) {
-            setState(() {
-              isLoading = false;
-            });
-          },
-          onWebResourceError: (WebResourceError error) {
-            setState(() {
-              isLoading = false;
-              errorMessage = 'Erreur de chargement de la carte';
-            });
-          },
-        ),
-      )
-      ..loadHtmlString(_generateMapHtml());
+    setState(() {
+      isLoading = true;
+      errorMessage = null;
+    });
   }
 
   String _generateMapHtml() {
@@ -227,7 +204,58 @@ class _MapsModalState extends State<MapsModal> {
                 ),
                 child: Stack(
                   children: [
-                    WebViewWidget(controller: _webViewController),
+                    InAppWebView(
+                      initialData: InAppWebViewInitialData(
+                        data: _generateMapHtml(),
+                        baseUrl: WebUri('https://maps.google.com'),
+                      ),
+                      initialSettings: InAppWebViewSettings(
+                        javaScriptEnabled: true,
+                        useHybridComposition: true,
+                        allowFileAccess: true,
+                        allowContentAccess: true,
+                        transparentBackground: true,
+                      ),
+                      onWebViewCreated: (controller) {
+                        _webViewController = controller;
+                      },
+                      onLoadStart: (controller, url) {
+                        if (mounted) {
+                          setState(() {
+                            isLoading = true;
+                            errorMessage = null;
+                          });
+                        }
+                      },
+                      onLoadStop: (controller, url) {
+                        if (mounted) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
+                      },
+                      onProgressChanged: (controller, progress) {
+                        if (mounted) {
+                          setState(() {
+                            _progress = progress / 100;
+                          });
+                        }
+                      },
+                      onReceivedError: (controller, request, error) {
+                        if (mounted) {
+                          setState(() {
+                            isLoading = false;
+                            errorMessage = 'Erreur de chargement de la carte';
+                          });
+                        }
+                      },
+                      onPermissionRequest: (controller, request) async {
+                        return PermissionResponse(
+                          resources: request.resources,
+                          action: PermissionResponseAction.GRANT,
+                        );
+                      },
+                    ),
                     
                     // Indicateur de chargement
                     if (isLoading)
@@ -284,7 +312,10 @@ class _MapsModalState extends State<MapsModal> {
                                     errorMessage = null;
                                     isLoading = true;
                                   });
-                                  _webViewController.loadHtmlString(_generateMapHtml());
+                                  _webViewController?.loadData(
+                                    data: _generateMapHtml(),
+                                    baseUrl: WebUri('https://maps.google.com'),
+                                  );
                                 },
                                 icon: const Icon(
                                   LucideIcons.refreshCw,

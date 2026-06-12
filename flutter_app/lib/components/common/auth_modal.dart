@@ -16,6 +16,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../composables/use_auth_handler.dart';
+// import 'google_logo.dart'; // TODO: Décommenter quand les connexions sociales seront activées
 
 class AuthModal extends ConsumerStatefulWidget {
   final bool isOpen;
@@ -43,6 +44,7 @@ class _AuthModalState extends ConsumerState<AuthModal> {
   bool _isLogin = true;
   bool _isLoading = false;
   bool _rememberMe = true;
+  bool _acceptNotifications = false;
   String? _error;
 
   @override
@@ -69,6 +71,15 @@ class _AuthModalState extends ConsumerState<AuthModal> {
       return;
     }
 
+    // Vérifier le consentement aux notifications pour l'inscription
+    if (!_isLogin && !_acceptNotifications) {
+      print('❌ [AuthModal] Consentement aux notifications requis');
+      setState(() {
+        _error = 'Vous devez accepter l\'utilisation de vos données pour vous inscrire.';
+      });
+      return;
+    }
+
     print('🔐 [AuthModal] Validation réussie, début du processus d\'authentification');
     setState(() {
       _isLoading = true;
@@ -90,11 +101,13 @@ class _AuthModalState extends ConsumerState<AuthModal> {
         print('🔐 [AuthModal] Résultat connexion: $success');
       } else {
         print('🔐 [AuthModal] Tentative d\'inscription pour: ${_emailController.text.trim()}');
+        print('📧 [AuthModal] Consentement notifications: $_acceptNotifications');
         success = await authHandler.register(
           _nameController.text.trim(),
           _emailController.text.trim(),
           _passwordController.text,
           _passwordConfirmationController.text,
+          acceptNotifications: _acceptNotifications,
         );
         print('🔐 [AuthModal] Résultat inscription: $success');
       }
@@ -168,6 +181,81 @@ class _AuthModalState extends ConsumerState<AuthModal> {
       });
     }
   }
+
+  // TODO: Activer les connexions sociales
+  // Voir SOCIAL_AUTH_IMPLEMENTATION.md pour l'implémentation complète
+  
+  /*
+  Future<void> _signInWithGoogle() async {
+    print('🔵 [AuthModal] _signInWithGoogle appelé');
+    
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      print('🔵 [AuthModal] Tentative de connexion avec Google');
+      final authHandler = ref.read(useAuthHandlerProvider.notifier);
+      
+      // TODO: Implémenter la connexion Google via Firebase Auth ou Google Sign In
+      // Pour l'instant, afficher un message
+      setState(() {
+        _error = 'La connexion Google sera bientôt disponible';
+        _isLoading = false;
+      });
+      
+      // Exemple d'implémentation future:
+      // final success = await authHandler.signInWithGoogle();
+      // if (success) {
+      //   widget.onAuthenticated?.call();
+      //   widget.onClose?.call();
+      // }
+      
+    } catch (error) {
+      print('❌ [AuthModal] Erreur connexion Google: $error');
+      setState(() {
+        _error = 'Erreur lors de la connexion avec Google';
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _signInWithFacebook() async {
+    print('🔷 [AuthModal] _signInWithFacebook appelé');
+    
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      print('🔷 [AuthModal] Tentative de connexion avec Facebook');
+      final authHandler = ref.read(useAuthHandlerProvider.notifier);
+      
+      // TODO: Implémenter la connexion Facebook via Firebase Auth ou Facebook Login
+      // Pour l'instant, afficher un message
+      setState(() {
+        _error = 'La connexion Facebook sera bientôt disponible';
+        _isLoading = false;
+      });
+      
+      // Exemple d'implémentation future:
+      // final success = await authHandler.signInWithFacebook();
+      // if (success) {
+      //   widget.onAuthenticated?.call();
+      //   widget.onClose?.call();
+      // }
+      
+    } catch (error) {
+      print('❌ [AuthModal] Erreur connexion Facebook: $error');
+      setState(() {
+        _error = 'Erreur lors de la connexion avec Facebook';
+        _isLoading = false;
+      });
+    }
+  }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -382,6 +470,37 @@ class _AuthModalState extends ConsumerState<AuthModal> {
                           return null;
                         },
                       ),
+                      const SizedBox(height: 12),
+                      // Consentement aux notifications
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF7FAFC),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: const Color(0xFFE2E8F0)),
+                        ),
+                        child: CheckboxListTile(
+                          title: const Text(
+                            'J\'autorise l\'utilisation de mes données personnelles (prénom, nom et adresse e-mail) aux fins de notification lors de la publication de nouveaux contenus sur l\'application.',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 13,
+                              color: Color(0xFF4A5568),
+                              height: 1.4,
+                            ),
+                          ),
+                          value: _acceptNotifications,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _acceptNotifications = value ?? false;
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                          contentPadding: EdgeInsets.zero,
+                          activeColor: const Color(0xFFE53E3E),
+                          dense: true,
+                        ),
+                      ),
                     ],
 
                     // Remember Me checkbox (only for login)
@@ -441,6 +560,93 @@ class _AuthModalState extends ConsumerState<AuthModal> {
                     ),
 
                     const SizedBox(height: 14),
+
+                    // TODO: Activer les connexions sociales (Google et Facebook)
+                    // Voir SOCIAL_AUTH_IMPLEMENTATION.md pour l'implémentation complète
+                    
+                    /* 
+                    // Divider avec "OU"
+                    Row(
+                      children: [
+                        const Expanded(child: Divider(color: Color(0xFFE2E8F0))),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            'OU',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 13,
+                              color: const Color(0xFF718096),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const Expanded(child: Divider(color: Color(0xFFE2E8F0))),
+                      ],
+                    ),
+
+                    const SizedBox(height: 14),
+
+                    // Boutons de connexion sociale
+                    Row(
+                      children: [
+                        // Bouton Google
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: _isLoading ? null : _signInWithGoogle,
+                            icon: const GoogleLogo(size: 20),
+                            label: const Text(
+                              'Google',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: const Color(0xFF4A5568),
+                              side: const BorderSide(color: Color(0xFFE2E8F0)),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        // Bouton Facebook
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: _isLoading ? null : _signInWithFacebook,
+                            icon: Image.asset(
+                              'assets/images/facebook-icon.png',
+                              width: 20,
+                              height: 20,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(Icons.facebook, size: 24, color: Color(0xFF1877F2));
+                              },
+                            ),
+                            label: const Text(
+                              'Facebook',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: const Color(0xFF4A5568),
+                              side: const BorderSide(color: Color(0xFFE2E8F0)),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 14),
+                    */
 
                     // Toggle Mode
                     TextButton(

@@ -42,6 +42,14 @@ class _YouTubeVideoModalState extends State<YouTubeVideoModal>
   void initState() {
     super.initState();
     
+    // Permettre toutes les orientations pour que la vidéo suive la rotation du téléphone
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -80,6 +88,13 @@ class _YouTubeVideoModalState extends State<YouTubeVideoModal>
 
   @override
   void dispose() {
+    // Conserver toutes les orientations (l'app entière supporte la rotation)
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     _animationController.dispose();
     super.dispose();
   }

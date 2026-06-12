@@ -47,8 +47,13 @@ void main() async {
     print('❌ [Firebase] Erreur initialisation: $e');
   }
   
-  // Configuration système identique à Vue
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // Configuration système - Permettre toutes les orientations
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
   
   // Initialisation des services (équivalent des imports main.js)
   await _initializeServices();

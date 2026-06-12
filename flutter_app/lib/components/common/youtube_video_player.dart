@@ -74,15 +74,18 @@ class YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
 
       _controller = YoutubePlayerController(
         initialVideoId: videoId,
-        flags: YoutubePlayerFlags(
-          autoPlay: widget.autoPlay,
-          mute: widget.mute,
+        flags: const YoutubePlayerFlags(
+          autoPlay: true,
+          mute: false,
           enableCaption: true,
           isLive: false,
           forceHD: false,
-          hideControls: !widget.showControls,
-          controlsVisibleAtStart: widget.showControls,
-          // startAt: 0, // Paramètre supprimé car obsolète
+          hideControls: false,
+          controlsVisibleAtStart: true,
+          disableDragSeek: false,
+          loop: false,
+          // Désactiver la rotation automatique de l'écran
+          useHybridComposition: true,
         ),
       );
 
